@@ -17,7 +17,7 @@
 npm install -g openapi-rq
 
 # Or run directly with npx
-npx orq
+npx openapi-rq
 ```
 
 ## Get Started in 1 Minute
@@ -25,7 +25,7 @@ npx orq
 ### Step 1: Initialize Project
 
 ```bash
-npx orq init
+npx openapi-rq init
 ```
 
 This creates the config file (`orq.config.json`) and utility files.
@@ -43,7 +43,7 @@ npm install axios react-query
 ### Step 3: Register an OpenAPI Spec
 
 ```bash
-npx orq add
+npx openapi-rq add
 ```
 
 ```
@@ -57,7 +57,7 @@ npx orq add
 ### Step 4: Generate API Code
 
 ```bash
-npx orq gen
+npx openapi-rq gen
 ```
 
 Use fuzzy search to select the endpoints you want, and the code will be generated.
@@ -156,7 +156,7 @@ Configure which hooks to generate in `orq.config.json`:
 If the backend isn't ready yet, you can create placeholder APIs first:
 
 ```bash
-npx orq create
+npx openapi-rq create
 ```
 
 ```
@@ -167,7 +167,7 @@ npx orq create
 ```
 
 A file with types and hooks will be created, but the API function throws an error.
-When the backend is ready, replace it with `npx orq gen --overwrite`.
+When the backend is ready, replace it with `npx openapi-rq gen --overwrite`.
 
 ## Next Steps
 

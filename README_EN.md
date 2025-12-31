@@ -75,7 +75,7 @@ choco install fzf
 ```bash
 npm install -g openapi-rq
 # or
-npx orq
+npx openapi-rq
 ```
 
 ## Quick Start
@@ -85,13 +85,13 @@ npx orq
 npm install axios @tanstack/react-query
 
 # 2. Initialize your project
-npx orq init
+npx openapi-rq init
 
 # 3. Add an OpenAPI spec
-npx orq add
+npx openapi-rq add
 
 # 4. Generate API code
-npx orq gen
+npx openapi-rq gen
 ```
 
 ## Commands
@@ -110,13 +110,13 @@ npx orq gen
 
 ```bash
 # Interactive mode (default)
-npx orq gen
+npx openapi-rq gen
 
 # Generate all endpoints from a spec
-npx orq gen --spec PETSTORE --all
+npx openapi-rq gen --spec PETSTORE --all
 
 # Overwrite existing files
-npx orq gen --all --overwrite
+npx openapi-rq gen --all --overwrite
 ```
 
 ### Create Placeholder API
@@ -125,10 +125,10 @@ Create API files before the backend is ready - useful for parallel frontend/back
 
 ```bash
 # Interactive mode
-npx orq create
+npx openapi-rq create
 
 # Direct mode
-npx orq create --method GET --path /users/{userId} --spec MY_API
+npx openapi-rq create --method GET --path /users/{userId} --spec MY_API
 ```
 
 The generated file includes types and hooks, but the API function throws an error until replaced with `orq generate --overwrite` when the actual API is ready.

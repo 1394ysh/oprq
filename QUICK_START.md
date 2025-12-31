@@ -17,7 +17,7 @@
 npm install -g openapi-rq
 
 # 또는 npx로 바로 실행
-npx orq
+npx openapi-rq
 ```
 
 ## 1분 만에 시작하기
@@ -25,7 +25,7 @@ npx orq
 ### Step 1: 프로젝트 초기화
 
 ```bash
-npx orq init
+npx openapi-rq init
 ```
 
 설정 파일(`orq.config.json`)과 유틸리티 파일이 생성됩니다.
@@ -43,7 +43,7 @@ npm install axios react-query
 ### Step 3: OpenAPI 스펙 등록
 
 ```bash
-npx orq add
+npx openapi-rq add
 ```
 
 ```
@@ -57,7 +57,7 @@ npx orq add
 ### Step 4: API 코드 생성
 
 ```bash
-npx orq gen
+npx openapi-rq gen
 ```
 
 fuzzy 검색으로 원하는 엔드포인트를 선택하면 코드가 생성됩니다.
@@ -156,7 +156,7 @@ src/api/
 백엔드가 아직 준비되지 않았다면, 플레이스홀더 API를 먼저 생성할 수 있습니다:
 
 ```bash
-npx orq create
+npx openapi-rq create
 ```
 
 ```
@@ -167,7 +167,7 @@ npx orq create
 ```
 
 타입과 훅이 포함된 파일이 생성되며, API 함수는 에러를 던지는 상태로 생성됩니다.
-백엔드가 완료되면 `npx orq gen --overwrite`로 실제 구현으로 교체하세요.
+백엔드가 완료되면 `npx openapi-rq gen --overwrite`로 실제 구현으로 교체하세요.
 
 ## 다음 단계
 

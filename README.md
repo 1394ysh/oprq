@@ -75,7 +75,7 @@ choco install fzf
 ```bash
 npm install -g openapi-rq
 # 또는
-npx orq
+npx openapi-rq
 ```
 
 ## 빠른 시작
@@ -85,13 +85,13 @@ npx orq
 npm install axios @tanstack/react-query
 
 # 2. 프로젝트 초기화
-npx orq init
+npx openapi-rq init
 
 # 3. OpenAPI 스펙 추가
-npx orq add
+npx openapi-rq add
 
 # 4. API 코드 생성
-npx orq gen
+npx openapi-rq gen
 ```
 
 ## 명령어
@@ -110,13 +110,13 @@ npx orq gen
 
 ```bash
 # 대화형 모드 (기본)
-npx orq gen
+npx openapi-rq gen
 
 # 스펙의 모든 엔드포인트 생성
-npx orq gen --spec PETSTORE --all
+npx openapi-rq gen --spec PETSTORE --all
 
 # 기존 파일 덮어쓰기
-npx orq gen --all --overwrite
+npx openapi-rq gen --all --overwrite
 ```
 
 ### 플레이스홀더 API 생성
@@ -125,10 +125,10 @@ npx orq gen --all --overwrite
 
 ```bash
 # 대화형 모드
-npx orq create
+npx openapi-rq create
 
 # 직접 지정
-npx orq create --method GET --path /users/{userId} --spec MY_API
+npx openapi-rq create --method GET --path /users/{userId} --spec MY_API
 ```
 
 생성된 파일에는 타입과 훅이 포함되지만, API 함수는 실제 API가 준비될 때까지 에러를 던집니다. 실제 API가 준비되면 `orq generate --overwrite`로 교체하세요.
