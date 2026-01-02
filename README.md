@@ -19,6 +19,8 @@
 
 ---
 
+https://github.com/user-attachments/assets/2720f298-4b98-4eb7-944b-d28d370e10d2
+
 **openapi-rq**는 OpenAPI 스펙에서 완전한 타입의 React Query 훅과 API 클라이언트 코드를 생성하는 CLI 도구입니다. [shadcn/ui](https://ui.shadcn.com/)에서 영감을 받아, 생성된 코드의 소유권을 사용자에게 제공합니다 - 런타임 의존성 없이 깔끔한 TypeScript 파일만 프로젝트에 추가됩니다.
 
 > **참고**: 패키지 이름은 `openapi-rq`이며, CLI 명령어는 `orq` (단축 별칭)입니다.

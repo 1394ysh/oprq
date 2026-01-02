@@ -19,6 +19,8 @@
 
 ---
 
+https://github.com/user-attachments/assets/2720f298-4b98-4eb7-944b-d28d370e10d2
+
 **openapi-rq** is a CLI tool that generates fully typed React Query hooks and API client code from OpenAPI specifications. Inspired by [shadcn/ui](https://ui.shadcn.com/), it gives you ownership of the generated code - no runtime dependencies, just clean TypeScript files in your project.
 
 > **Note**: The package name is `openapi-rq`, and the CLI command is `orq` (short alias).
