@@ -1,0 +1,69 @@
+name: Publish to npm
+
+on:
+  # 태그 푸시 시 자동 배포 (v1.0.0, v0.1.2 등)
+  push:
+    tags:
+      - "v*.*.*"
+
+  # 수동 트리거 (Actions 탭에서 실행 가능)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (no actual publish)"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm-publish
+
+    permissions:
+      contents: write # GitHub Release 생성용
+      id-token: write # npm OIDC 인증용
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
+
+      - name: Upgrade npm (required for OIDC)
+        run: npm install -g npm@^11
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish (Dry Run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: npm publish --dry-run
+
+      - name: Publish to npm (OIDC)
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: npm publish --provenance --access public
+
+      - name: Get package version
+        id: package
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        if: ${{ github.event.inputs.dry_run != 'true' && startsWith(github.ref, 'refs/tags/') }}
+        uses: softprops/action-gh-release@v1
+        with:
+          name: v${{ steps.package.outputs.version }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
