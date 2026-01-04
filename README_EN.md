@@ -19,8 +19,6 @@
 
 ---
 
-https://github.com/user-attachments/assets/2720f298-4b98-4eb7-944b-d28d370e10d2
-
 **oprq** is a CLI tool that generates fully typed React Query hooks and API client code from OpenAPI specifications. Inspired by [shadcn/ui](https://ui.shadcn.com/), it gives you ownership of the generated code - no runtime dependencies, just clean TypeScript files in your project.
 
 ## Why oprq?
@@ -38,6 +36,7 @@ This project was built to establish a **single source of truth** for API contrac
 ## Features
 
 - **Type-safe** - Full TypeScript support with auto-generated types from OpenAPI schemas
+- **OpenAPI 3.x support** - Supports OpenAPI 3.0/3.1 specs (Swagger 2.0 support coming soon)
 - **React Query v3/v4/v5** - Support for all major versions of TanStack Query
 - **Zero runtime overhead** - Generated code has no dependencies on oprq
 - **Interactive CLI** - Fuzzy search to select specific endpoints

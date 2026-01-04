@@ -15,7 +15,7 @@ interface CreateOptions {
 interface OprqConfig {
   outputPath: string;
   reactQueryVersion: "v3" | "v4" | "v5";
-  specs?: Record<string, { url: string; description?: string }>;
+  specs?: Record<string, { url?: string; description?: string }>;
   generate?: {
     queryHook?: boolean;
     mutationHook?: boolean;
@@ -62,7 +62,7 @@ export async function runCreate(options: CreateOptions): Promise<void> {
     ]);
 
     if (selectedSpec === "Create new spec...") {
-      const { newSpecName } = await inquirer.prompt([
+      const { newSpecName, specUrl, specDescription } = await inquirer.prompt([
         {
           type: "input",
           name: "newSpecName",
@@ -72,11 +72,43 @@ export async function runCreate(options: CreateOptions): Promise<void> {
             if (!/^[A-Z][A-Z0-9_]*$/.test(input)) {
               return "Use UPPER_SNAKE_CASE (e.g., MY_API)";
             }
+            if (config.specs?.[input]) {
+              return `${input} already exists.`;
+            }
             return true;
           },
         },
+        {
+          type: "input",
+          name: "specUrl",
+          message: "OpenAPI spec URL (optional, press Enter to skip):",
+          validate: (input) => {
+            if (!input.trim()) return true;
+            try {
+              new URL(input);
+              return true;
+            } catch {
+              return "Please enter a valid URL.";
+            }
+          },
+        },
+        {
+          type: "input",
+          name: "specDescription",
+          message: "Description (optional):",
+        },
       ]);
+
       specName = newSpecName;
+
+      // Add new spec to config
+      config.specs = config.specs || {};
+      config.specs[newSpecName] = {
+        ...(specUrl?.trim() && { url: specUrl.trim() }),
+        ...(specDescription?.trim() && { description: specDescription.trim() }),
+      };
+      await saveConfig(configPath, config);
+      console.log(chalk.green(`✓ Spec "${newSpecName}" added to oprq.config.json`));
     } else {
       specName = selectedSpec;
     }
@@ -169,9 +201,34 @@ export async function runCreate(options: CreateOptions): Promise<void> {
     queryParamsType = inputQueryParams;
   }
 
+  // Calculate output path (same as generate command)
+  const finalApiPath = apiPath!;
+  const cleanPath = finalApiPath.replace(/^\//, "");
+  const fileName = `${method.toLowerCase()}/${cleanPath}.ts`;
+  const filePath = path.join(process.cwd(), config.outputPath, specName!, fileName);
+  const outputDir = path.dirname(filePath);
+
+  // Check if file exists (before spinner to avoid terminal conflict)
+  try {
+    await fs.access(filePath);
+    const { overwrite } = await inquirer.prompt([
+      {
+        type: "confirm",
+        name: "overwrite",
+        message: `${filePath} already exists. Overwrite?`,
+        default: false,
+      },
+    ]);
+    if (!overwrite) {
+      console.log(chalk.yellow("Cancelled."));
+      return;
+    }
+  } catch {
+    // File doesn't exist, continue
+  }
+
   // Generate file
   const spinner = ora("Creating placeholder API file...").start();
-  const finalApiPath = apiPath!;
 
   try {
     const operationId = generateOperationId(method, finalApiPath);
@@ -190,39 +247,7 @@ export async function runCreate(options: CreateOptions): Promise<void> {
       config,
     });
 
-    // Calculate output path
-    const outputDir = path.join(
-      process.cwd(),
-      config.outputPath,
-      specName!,
-      method.toLowerCase(),
-      ...finalApiPath.split("/").filter(Boolean)
-    );
-
     await fs.mkdir(outputDir, { recursive: true });
-
-    const fileName = "index.ts";
-    const filePath = path.join(outputDir, fileName);
-
-    // Check if file exists
-    try {
-      await fs.access(filePath);
-      const { overwrite } = await inquirer.prompt([
-        {
-          type: "confirm",
-          name: "overwrite",
-          message: `${filePath} already exists. Overwrite?`,
-          default: false,
-        },
-      ]);
-      if (!overwrite) {
-        spinner.info("Cancelled.");
-        return;
-      }
-    } catch {
-      // File doesn't exist, continue
-    }
-
     await fs.writeFile(filePath, fileContent);
 
     spinner.succeed("Placeholder API file created!");
@@ -275,10 +300,10 @@ function generatePlaceholderFile(options: GenerateFileOptions): string {
   const hasRequiredBody = ["POST", "PUT", "PATCH"].includes(method) && bodyType !== "undefined";
   const argsDefault = !hasRequiredPathParams && !hasRequiredBody ? " = {}" : "";
 
-  // Calculate __oprq__ relative path
-  // Structure: {specName}/{method}/...path.../index.ts → __oprq__ is at specName's parent level
+  // Calculate __oprq__ relative path (same as generate command)
+  // Structure: {specName}/{method}/...path.ts → __oprq__ is at specName's parent level
   const pathDepth = apiPath.split("/").filter(Boolean).length;
-  const totalDepth = 1 + 1 + pathDepth; // specName folder + method folder + path folders
+  const totalDepth = 1 + pathDepth; // method folder + path folders
   const utilsRelativePath = "../".repeat(totalDepth) + "__oprq__";
 
   const version = config.reactQueryVersion;
@@ -499,4 +524,8 @@ async function loadConfig(configPath: string): Promise<OprqConfig | null> {
   } catch {
     return null;
   }
+}
+
+async function saveConfig(configPath: string, config: OprqConfig): Promise<void> {
+  await fs.writeFile(configPath, JSON.stringify(config, null, 2) + "\n", "utf-8");
 }
