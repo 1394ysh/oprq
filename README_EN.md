@@ -1,7 +1,7 @@
 <p align="center">
-  <h1 align="center">openapi-rq (orq)</h1>
+  <h1 align="center">oprq</h1>
   <p align="center">
-    <strong>OpenAPI React Query</strong> - Generate type-safe React Query code from OpenAPI specs
+    <strong>OpenAPI React Query Codegen</strong> - Generate type-safe React Query code from OpenAPI specs
   </p>
   <p align="center">
     <a href="./README.md">한국어</a>
@@ -21,11 +21,9 @@
 
 https://github.com/user-attachments/assets/2720f298-4b98-4eb7-944b-d28d370e10d2
 
-**openapi-rq** is a CLI tool that generates fully typed React Query hooks and API client code from OpenAPI specifications. Inspired by [shadcn/ui](https://ui.shadcn.com/), it gives you ownership of the generated code - no runtime dependencies, just clean TypeScript files in your project.
+**oprq** is a CLI tool that generates fully typed React Query hooks and API client code from OpenAPI specifications. Inspired by [shadcn/ui](https://ui.shadcn.com/), it gives you ownership of the generated code - no runtime dependencies, just clean TypeScript files in your project.
 
-> **Note**: The package name is `openapi-rq`, and the CLI command is `orq` (short alias).
-
-## Why openapi-rq?
+## Why oprq?
 
 This project was built to establish a **single source of truth** for API contracts in team collaboration.
 
@@ -34,14 +32,14 @@ This project was built to establish a **single source of truth** for API contrac
 - **Type Safety** - Generate types directly from OpenAPI specs to prevent runtime errors
 - **Incremental Adoption** - Generate only the endpoints you need without changing your entire codebase. Easy to adopt in legacy projects
 - **Code Ownership** - Generated code fully belongs to your project. Modify freely as needed
-- **Zero Runtime Dependency** - orq is just a generator, not included in your production bundle
+- **Zero Runtime Dependency** - oprq is just a generator, not included in your production bundle
 - **Parallel Development** - Create placeholder APIs before the backend is ready to start frontend development early
 
 ## Features
 
 - **Type-safe** - Full TypeScript support with auto-generated types from OpenAPI schemas
 - **React Query v3/v4/v5** - Support for all major versions of TanStack Query
-- **Zero runtime overhead** - Generated code has no dependencies on orq
+- **Zero runtime overhead** - Generated code has no dependencies on oprq
 - **Interactive CLI** - Fuzzy search to select specific endpoints
 - **Incremental generation** - Add or regenerate individual endpoints as needed
 - **axios integration** - Bootstrap pattern for HTTP client configuration
@@ -75,9 +73,9 @@ choco install fzf
 ## Installation
 
 ```bash
-npm install -g openapi-rq
+npm install -g oprq
 # or
-npx openapi-rq
+npx oprq
 ```
 
 ## Quick Start
@@ -87,38 +85,38 @@ npx openapi-rq
 npm install axios @tanstack/react-query
 
 # 2. Initialize your project
-npx openapi-rq init
+npx oprq init
 
 # 3. Add an OpenAPI spec
-npx openapi-rq add
+npx oprq add
 
 # 4. Generate API code
-npx openapi-rq gen
+npx oprq gen
 ```
 
 ## Commands
 
-| Command | Alias | Description |
-|---------|-------|-------------|
-| `orq init` | - | Initialize project with config and utility files |
-| `orq add` | - | Add a new OpenAPI spec URL |
-| `orq remove` | `rm` | Remove a registered spec |
-| `orq generate` | `g`, `gen` | Generate API code (interactive) |
-| `orq sync` | - | Regenerate all registered specs |
-| `orq list` | `ls` | List registered specs |
-| `orq create` | `new` | Create placeholder API (for parallel development) |
+| Command         | Alias      | Description                                       |
+| --------------- | ---------- | ------------------------------------------------- |
+| `oprq init`     | -          | Initialize project with config and utility files  |
+| `oprq add`      | -          | Add a new OpenAPI spec URL                        |
+| `oprq remove`   | `rm`       | Remove a registered spec                          |
+| `oprq generate` | `g`, `gen` | Generate API code (interactive)                   |
+| `oprq sync`     | -          | Regenerate all registered specs                   |
+| `oprq list`     | `ls`       | List registered specs                             |
+| `oprq create`   | `new`      | Create placeholder API (for parallel development) |
 
 ### Generate Options
 
 ```bash
 # Interactive mode (default)
-npx openapi-rq gen
+npx oprq gen
 
 # Generate all endpoints from a spec
-npx openapi-rq gen --spec PETSTORE --all
+npx oprq gen --spec PETSTORE --all
 
 # Overwrite existing files
-npx openapi-rq gen --all --overwrite
+npx oprq gen --all --overwrite
 ```
 
 ### Create Placeholder API
@@ -127,21 +125,21 @@ Create API files before the backend is ready - useful for parallel frontend/back
 
 ```bash
 # Interactive mode
-npx openapi-rq create
+npx oprq create
 
 # Direct mode
-npx openapi-rq create --method GET --path /users/{userId} --spec MY_API
+npx oprq create --method GET --path /users/{userId} --spec MY_API
 ```
 
-The generated file includes types and hooks, but the API function throws an error until replaced with `orq generate --overwrite` when the actual API is ready.
+The generated file includes types and hooks, but the API function throws an error until replaced with `oprq generate --overwrite` when the actual API is ready.
 
 ## Configuration
 
-After running `orq init`, an `orq.config.json` file is created:
+After running `oprq init`, an `oprq.config.json` file is created:
 
 ```json
 {
-  "$schema": "https://unpkg.com/openapi-rq/schema.json",
+  "$schema": "https://unpkg.com/oprq/schema.json",
   "outputPath": "./src/api",
   "reactQueryVersion": "v5",
   "httpClient": "axios",
@@ -163,16 +161,16 @@ After running `orq init`, an `orq.config.json` file is created:
 
 ### Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `outputPath` | `string` | `"./src/api"` | Output directory for generated files |
-| `reactQueryVersion` | `"v3" \| "v4" \| "v5"` | `"v5"` | React Query version |
-| `httpClient` | `"axios"` | `"axios"` | HTTP client (axios only for now) |
-| `keepSpecPrefix` | `boolean` | `true` | Keep spec prefix in API URLs (see below) |
-| `generate.queryHook` | `boolean` | `true` | Generate `useQuery` hooks |
-| `generate.mutationHook` | `boolean` | `true` | Generate `useMutation` hooks |
-| `generate.suspenseHook` | `boolean` | `false` | Generate `useSuspenseQuery` hooks (v5 only) |
-| `generate.infiniteQueryHook` | `boolean` | `false` | Generate `useInfiniteQuery` hooks for pagination |
+| Option                       | Type                   | Default       | Description                                      |
+| ---------------------------- | ---------------------- | ------------- | ------------------------------------------------ |
+| `outputPath`                 | `string`               | `"./src/api"` | Output directory for generated files             |
+| `reactQueryVersion`          | `"v3" \| "v4" \| "v5"` | `"v5"`        | React Query version                              |
+| `httpClient`                 | `"axios"`              | `"axios"`     | HTTP client (axios only for now)                 |
+| `keepSpecPrefix`             | `boolean`              | `true`        | Keep spec prefix in API URLs (see below)         |
+| `generate.queryHook`         | `boolean`              | `true`        | Generate `useQuery` hooks                        |
+| `generate.mutationHook`      | `boolean`              | `true`        | Generate `useMutation` hooks                     |
+| `generate.suspenseHook`      | `boolean`              | `false`       | Generate `useSuspenseQuery` hooks (v5 only)      |
+| `generate.infiniteQueryHook` | `boolean`              | `false`       | Generate `useInfiniteQuery` hooks for pagination |
 
 ### keepSpecPrefix Option
 
@@ -204,7 +202,7 @@ When using a single baseURL:
 ```typescript
 // Generated URL: "/pet/{petId}" (prefix removed)
 const http = axios.create({
-  baseURL: "https://petstore3.swagger.io/api/v3"
+  baseURL: "https://petstore3.swagger.io/api/v3",
 });
 setHttpClient(http);
 ```
@@ -218,7 +216,7 @@ In your app's entry point, configure the axios instance:
 ```typescript
 // src/main.tsx or src/index.tsx
 import axios from "axios";
-import { setHttpClient } from "@/api/__orq__";
+import { setHttpClient } from "@/api/__oprq__";
 
 const http = axios.create({
   baseURL: "/api",
@@ -304,7 +302,7 @@ class PetDetail extends React.Component<{ petId: string }> {
   async componentDidMount() {
     try {
       const pet = await getPetById({
-        pathParams: { petId: this.props.petId }
+        pathParams: { petId: this.props.petId },
       });
       this.setState({ pet, loading: false });
     } catch (error) {
@@ -325,7 +323,7 @@ class PetDetail extends React.Component<{ petId: string }> {
 
 ```
 src/api/
-├── __orq__/
+├── __oprq__/
 │   ├── httpClient.ts      # HTTP client bootstrap & RequestConfig type
 │   ├── StringReplacer.ts  # URL parameter utility
 │   └── index.ts
@@ -353,7 +351,7 @@ export interface RequestArgs {
   pathParams: PathParams;
   queryParams?: QueryParams;
   body?: Body;
-  config?: RequestConfig;  // For custom headers, responseType, etc.
+  config?: RequestConfig; // For custom headers, responseType, etc.
 }
 
 // Query key for cache management
@@ -362,7 +360,9 @@ export const getPetByIdQueryKey = (req: RequestArgs) =>
 
 // Repository function
 export const getPetById = async (args: RequestArgs): Promise<Response> => {
-  const url = new StringReplacer("PETSTORE:/pet/{petId}").replaceText(args.pathParams);
+  const url = new StringReplacer("PETSTORE:/pet/{petId}").replaceText(
+    args.pathParams
+  );
   const http = getHttpClient();
   return http.get(url, { params: args?.queryParams, ...args?.config });
 };
@@ -370,7 +370,10 @@ export const getPetById = async (args: RequestArgs): Promise<Response> => {
 // React Query hook
 export const useGetPetByIdQuery = <TData = Response, TError = ErrorResponse>(
   req: RequestArgs,
-  options?: Omit<UseQueryOptions<Response, TError, TData>, "queryKey" | "queryFn">
+  options?: Omit<
+    UseQueryOptions<Response, TError, TData>,
+    "queryKey" | "queryFn"
+  >
 ): UseQueryResult<TData, TError> => {
   return useQuery({
     queryKey: getPetByIdQueryKey(req),

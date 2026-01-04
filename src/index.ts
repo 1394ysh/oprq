@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * orq (OpenAPI React Query)
+ * oprq (OpenAPI React Query Codegen)
  * CLI for generating React Query API code from OpenAPI specs
  */
 import { Command } from "commander";
@@ -20,7 +20,7 @@ const { version } = require("../package.json");
 const program = new Command();
 
 program
-  .name("orq")
+  .name("oprq")
   .description("OpenAPI to React Query code generator")
   .version(version);
 
@@ -159,7 +159,7 @@ program.on("command:*", (operands) => {
   console.log(`  remove (rm)        Remove a spec`);
   console.log(`  sync               Sync all specs`);
   console.log(`  create (new)       Create placeholder API`);
-  console.log(`\nRun ${chalk.cyan("orq --help")} for more information.`);
+  console.log(`\nRun ${chalk.cyan("oprq --help")} for more information.`);
   process.exit(1);
 });
 

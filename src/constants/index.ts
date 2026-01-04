@@ -3,8 +3,8 @@
  */
 
 // 설정 파일
-export const CONFIG_FILE_NAME = "orq.config.json" as const;
-export const SCHEMA_URL = "https://unpkg.com/openapi-rq/schema.json" as const;
+export const CONFIG_FILE_NAME = "oprq.config.json" as const;
+export const SCHEMA_URL = "https://unpkg.com/oprq/schema.json" as const;
 
 // HTTP 메서드
 export const HTTP_METHODS = [

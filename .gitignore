@@ -33,3 +33,4 @@ coverage/
 CLAUDE.md
 
 .npmrc
+oprq.config.json

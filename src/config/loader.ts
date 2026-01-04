@@ -3,7 +3,7 @@ import path from "path";
 import { CONFIG_FILE_NAME } from "../constants/index.js";
 
 /**
- * orq.config.json 설정 타입
+ * oprq.config.json 설정 타입
  */
 export interface SpecConfig {
   url: string;
@@ -19,7 +19,7 @@ export interface GenerateConfig {
   infiniteQueryHook?: boolean;
 }
 
-export interface OrqConfig {
+export interface OprqConfig {
   $schema?: string;
   outputPath?: string;
   httpClient?: string;
@@ -41,7 +41,7 @@ export interface OrqConfig {
 }
 
 export interface LoadConfigResult {
-  config: OrqConfig | null;
+  config: OprqConfig | null;
   error: ConfigError | null;
   configPath: string;
 }
@@ -76,7 +76,7 @@ export async function loadConfig(
   try {
     const content = await fs.readFile(configPath, "utf-8");
     try {
-      const config = JSON.parse(content) as OrqConfig;
+      const config = JSON.parse(content) as OprqConfig;
       return { config, error: null, configPath };
     } catch (parseError) {
       return {
@@ -132,7 +132,7 @@ export async function loadConfig(
  */
 export async function loadConfigSimple(
   cwd: string = process.cwd()
-): Promise<OrqConfig | null> {
+): Promise<OprqConfig | null> {
   const result = await loadConfig(cwd);
   return result.config;
 }
@@ -141,7 +141,7 @@ export async function loadConfigSimple(
  * 설정 파일 저장
  */
 export async function saveConfig(
-  config: OrqConfig,
+  config: OprqConfig,
   cwd: string = process.cwd()
 ): Promise<void> {
   const configPath = getConfigPath(cwd);

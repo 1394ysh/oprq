@@ -17,7 +17,7 @@ interface ProjectConfig {
   reactQueryVersion: ReactQueryVersion;
 }
 
-const CONFIG_FILE_NAME = "orq.config.json";
+const CONFIG_FILE_NAME = "oprq.config.json";
 
 /**
  * Initialize project
@@ -26,7 +26,7 @@ const CONFIG_FILE_NAME = "orq.config.json";
  */
 export async function runInit(options: InitOptions): Promise<void> {
   console.log(chalk.bold("\n========================================"));
-  console.log(chalk.bold("  orq - Initialize"));
+  console.log(chalk.bold("  oprq - Initialize"));
   console.log(chalk.bold("========================================\n"));
 
   // Step 1: Set output path
@@ -91,7 +91,7 @@ export async function runInit(options: InitOptions): Promise<void> {
       configPath,
       JSON.stringify(
         {
-          $schema: "https://unpkg.com/openapi-rq/schema.json",
+          $schema: "https://unpkg.com/oprq/schema.json",
           outputPath: outputPath,
           reactQueryVersion: reactQueryConfig.version,
           httpClient: "axios",
@@ -124,16 +124,16 @@ export async function runInit(options: InitOptions): Promise<void> {
     console.log(chalk.green("\n✓ Initialization complete!\n"));
     console.log(chalk.gray("Created files:"));
     console.log(chalk.gray(`  - ${CONFIG_FILE_NAME}`));
-    console.log(chalk.gray(`  - ${outputPath}/__orq__/StringReplacer.ts`));
-    console.log(chalk.gray(`  - ${outputPath}/__orq__/httpClient.ts`));
-    console.log(chalk.gray(`  - ${outputPath}/__orq__/index.ts`));
+    console.log(chalk.gray(`  - ${outputPath}/__oprq__/StringReplacer.ts`));
+    console.log(chalk.gray(`  - ${outputPath}/__oprq__/httpClient.ts`));
+    console.log(chalk.gray(`  - ${outputPath}/__oprq__/index.ts`));
     console.log("");
     console.log(chalk.yellow("📦 Don't forget to install peer dependencies:"));
     const queryPackage = reactQueryConfig.version === "v3" ? "react-query" : "@tanstack/react-query";
     console.log(chalk.white(`   npm install axios ${queryPackage}`));
     console.log("");
     console.log(
-      chalk.cyan("Run 'orq generate' to generate API files.")
+      chalk.cyan("Run 'oprq generate' to generate API files.")
     );
     console.log("");
   } catch (error) {

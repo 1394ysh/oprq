@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "openapi-rq Configuration",
-  "description": "Configuration schema for openapi-rq (orq) - OpenAPI to React Query code generator",
+  "title": "oprq Configuration",
+  "description": "Configuration schema for oprq (OpenAPI React Query Codegen)",
   "type": "object",
   "properties": {
     "$schema": {

@@ -6,14 +6,14 @@ import { loadConfigSimple } from "../../config/loader.js";
  */
 export async function listSpecs(): Promise<void> {
   console.log(chalk.bold("\n========================================"));
-  console.log(chalk.bold("  orq - Registered Specs"));
+  console.log(chalk.bold("  oprq - Registered Specs"));
   console.log(chalk.bold("========================================\n"));
 
   const config = await loadConfigSimple();
 
   if (!config) {
-    console.log(chalk.red("orq.config.json not found."));
-    console.log(chalk.gray("Run 'orq init' first to initialize the project."));
+    console.log(chalk.red("oprq.config.json not found."));
+    console.log(chalk.gray("Run 'oprq init' first to initialize the project."));
     return;
   }
 
@@ -22,7 +22,7 @@ export async function listSpecs(): Promise<void> {
 
   if (specEntries.length === 0) {
     console.log(chalk.yellow("No specs registered."));
-    console.log(chalk.gray("Run 'orq add' to add an OpenAPI spec."));
+    console.log(chalk.gray("Run 'oprq add' to add an OpenAPI spec."));
     return;
   }
 

@@ -1,13 +1,12 @@
 {
-  "name": "openapi-rq",
-  "version": "0.1.5",
+  "name": "oprq",
+  "version": "0.1.0",
   "description": "OpenAPI to React Query code generator with shadcn-style DX",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "openapi-rq": "./bin/orq.js",
-    "orq": "./bin/orq.js"
+    "oprq": "./bin/oprq.js"
   },
   "files": [
     "dist",
@@ -34,15 +33,15 @@
     "axios",
     "shadcn"
   ],
-  "author": "rocky <1394ysh@gmail.com>",
+  "author": "1394ysh <1394ysh@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/1394ysh/openapi-rq.git"
+    "url": "git+https://github.com/1394ysh/oprq.git"
   },
-  "homepage": "https://github.com/1394ysh/openapi-rq#readme",
+  "homepage": "https://github.com/1394ysh/oprq#readme",
   "bugs": {
-    "url": "https://github.com/1394ysh/openapi-rq/issues"
+    "url": "https://github.com/1394ysh/oprq/issues"
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^12.1.0",

@@ -12,8 +12,8 @@ import {
 import { fetchOpenApiSpec } from "../../parser/openapi.js";
 import { extractAllApis } from "../../parser/apis.js";
 import { generateApiFile } from "../../generator/fileGenerator.js";
-import { generateUtilityFiles, orqFolderExists } from "../../generator/templates.js";
-import { loadConfigSimple, type OrqConfig, type ReactQueryVersion } from "../../config/loader.js";
+import { generateUtilityFiles, oprqFolderExists } from "../../generator/templates.js";
+import { loadConfigSimple, type OprqConfig, type ReactQueryVersion } from "../../config/loader.js";
 import { fileExists, generateFileName } from "../../utils/files.js";
 import type { SpecName } from "../../config/specs.js";
 
@@ -29,15 +29,15 @@ interface GenerateOptions {
  */
 export async function runInteractiveMode(options: GenerateOptions): Promise<void> {
   console.log(chalk.bold("\n========================================"));
-  console.log(chalk.bold("  orq - OpenAPI React Query Generator"));
+  console.log(chalk.bold("  oprq - OpenAPI React Query Generator"));
   console.log(chalk.bold("========================================\n"));
 
   // Load config file
   const config = await loadConfigSimple();
 
   if (!config) {
-    console.log(chalk.red("orq.config.json not found."));
-    console.log(chalk.gray("Run 'orq init' first to initialize the project."));
+    console.log(chalk.red("oprq.config.json not found."));
+    console.log(chalk.gray("Run 'oprq init' first to initialize the project."));
     return;
   }
 
@@ -45,7 +45,7 @@ export async function runInteractiveMode(options: GenerateOptions): Promise<void
 
   if (Object.keys(specs).length === 0) {
     console.log(chalk.yellow("No specs registered."));
-    console.log(chalk.gray("Run 'orq add' to add an OpenAPI spec."));
+    console.log(chalk.gray("Run 'oprq add' to add an OpenAPI spec."));
     return;
   }
 
@@ -102,7 +102,7 @@ export async function runInteractiveMode(options: GenerateOptions): Promise<void
 
   // Step 6: Ensure utility files exist (only if not already present)
   const fullOutputPath = process.cwd() + "/" + outputPath;
-  const utilsExist = await orqFolderExists(fullOutputPath);
+  const utilsExist = await oprqFolderExists(fullOutputPath);
   if (!utilsExist) {
     await generateUtilityFiles(fullOutputPath);
     console.log(chalk.green("✓ Utility files created"));

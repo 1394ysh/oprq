@@ -1,6 +1,10 @@
 import fs from "fs/promises";
 import path from "path";
-import type { OpenApiSpec, OperationObject, SchemaObject } from "../parser/openapi.js";
+import type {
+  OpenApiSpec,
+  OperationObject,
+  SchemaObject,
+} from "../parser/openapi.js";
 import {
   schemaToTypeString,
   extractAllSchemaNames,
@@ -53,7 +57,15 @@ const DEFAULT_HOOK_OPTIONS: HookOptions = {
  * 단일 API 파일 생성
  */
 export async function generateApiFile(options: GenerateOptions): Promise<void> {
-  const { specName, api, outputPath, openApiSpec, reactQueryConfig, httpClientPath, hookOptions } = options;
+  const {
+    specName,
+    api,
+    outputPath,
+    openApiSpec,
+    reactQueryConfig,
+    httpClientPath,
+    hookOptions,
+  } = options;
 
   // 작업 객체 가져오기
   const pathItem = openApiSpec.paths[api.path];
@@ -114,8 +126,12 @@ function generateFileContent(options: GenerateContentOptions): string {
   const pascalCaseId = toPascalCase(operationId);
 
   // 파라미터 분석
-  const pathParams = (operation.parameters || []).filter((p) => p.in === "path");
-  const queryParams = (operation.parameters || []).filter((p) => p.in === "query");
+  const pathParams = (operation.parameters || []).filter(
+    (p) => p.in === "path"
+  );
+  const queryParams = (operation.parameters || []).filter(
+    (p) => p.in === "query"
+  );
 
   // 요청/응답 스키마 추출 (content-type에 관계없이 첫 번째 스키마 사용)
   const requestSchema = getFirstSchema(operation.requestBody?.content);
@@ -137,16 +153,17 @@ function generateFileContent(options: GenerateContentOptions): string {
   const responseType = successResponseInfo.isNoContent
     ? "void"
     : successResponseInfo.schema
-      ? schemaToTypeString(successResponseInfo.schema, openApiSpec)
-      : "void";
+    ? schemaToTypeString(successResponseInfo.schema, openApiSpec)
+    : "void";
 
   // 여러 에러 타입을 union으로 합침
-  const errorType = errorSchemas.length > 0
-    ? errorSchemas
-        .map((schema) => schemaToTypeString(schema, openApiSpec))
-        .filter((type, index, arr) => arr.indexOf(type) === index) // 중복 제거
-        .join(" | ")
-    : "unknown";
+  const errorType =
+    errorSchemas.length > 0
+      ? errorSchemas
+          .map((schema) => schemaToTypeString(schema, openApiSpec))
+          .filter((type, index, arr) => arr.indexOf(type) === index) // 중복 제거
+          .join(" | ")
+      : "unknown";
 
   // 필수 여부 확인
   const hasRequiredPathParams = pathParams.length > 0;
@@ -167,13 +184,16 @@ function generateFileContent(options: GenerateContentOptions): string {
   });
 
   // React Query import 생성 (hookOptions에 따라 필요한 import만)
-  const reactQueryImport = generateReactQueryImport(reactQueryConfig, hookOptions);
+  const reactQueryImport = generateReactQueryImport(
+    reactQueryConfig,
+    hookOptions
+  );
 
-  // __orq__ 경로 계산 (폴더 깊이에 따라 동적으로)
-  // 구조: {specName}/{method}/...path.../file.ts → __orq__는 specName과 같은 레벨
+  // __oprq__ 경로 계산 (폴더 깊이에 따라 동적으로)
+  // 구조: {specName}/{method}/...path.../file.ts → __oprq__는 specName과 같은 레벨
   const pathDepth = apiPath.split("/").filter(Boolean).length; // path segments
   const totalDepth = 1 + pathDepth; // method 폴더 + path 폴더들
-  const utilsRelativePath = "../".repeat(totalDepth) + "__orq__";
+  const utilsRelativePath = "../".repeat(totalDepth) + "__oprq__";
 
   // Hook 코드 생성
   const queryHookCode = hookOptions.queryHook
@@ -186,11 +206,21 @@ function generateFileContent(options: GenerateContentOptions): string {
     ? generateMutationHook(pascalCaseId, operationId)
     : "";
   const infiniteQueryHookCode = hookOptions.infiniteQueryHook
-    ? generateInfiniteQueryHook(pascalCaseId, operationId, argsType, reactQueryConfig.version)
+    ? generateInfiniteQueryHook(
+        pascalCaseId,
+        operationId,
+        argsType,
+        reactQueryConfig.version
+      )
     : "";
 
   // Hook 섹션 조합
-  const hooksSection = [queryHookCode, suspenseHookCode, infiniteQueryHookCode, mutationHookCode]
+  const hooksSection = [
+    queryHookCode,
+    suspenseHookCode,
+    infiniteQueryHookCode,
+    mutationHookCode,
+  ]
     .filter(Boolean)
     .join("\n");
 
@@ -553,7 +583,15 @@ interface ResponseInfo {
  * 204 No Content는 별도 처리
  */
 function getSuccessResponse(
-  responses: Record<string, { description?: string; content?: Record<string, { schema?: SchemaObject }> }> | undefined
+  responses:
+    | Record<
+        string,
+        {
+          description?: string;
+          content?: Record<string, { schema?: SchemaObject }>;
+        }
+      >
+    | undefined
 ): ResponseInfo {
   if (!responses) {
     return { schema: undefined, statusCode: "200", isNoContent: false };
@@ -602,7 +640,15 @@ function getSuccessResponse(
  * 여러 에러 타입이 있으면 union으로 합침
  */
 function getErrorSchemas(
-  responses: Record<string, { description?: string; content?: Record<string, { schema?: SchemaObject }> }> | undefined
+  responses:
+    | Record<
+        string,
+        {
+          description?: string;
+          content?: Record<string, { schema?: SchemaObject }>;
+        }
+      >
+    | undefined
 ): SchemaObject[] {
   if (!responses) return [];
 

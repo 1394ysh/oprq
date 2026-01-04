@@ -12,15 +12,15 @@ interface RemoveOptions {
  */
 export async function runRemove(options: RemoveOptions): Promise<void> {
   console.log(chalk.bold("\n========================================"));
-  console.log(chalk.bold("  orq - Remove OpenAPI Spec"));
+  console.log(chalk.bold("  oprq - Remove OpenAPI Spec"));
   console.log(chalk.bold("========================================\n"));
 
   // Load config file
   const config = await loadConfigSimple();
 
   if (!config) {
-    console.log(chalk.red("orq.config.json not found."));
-    console.log(chalk.gray("Run 'orq init' first to initialize the project."));
+    console.log(chalk.red("oprq.config.json not found."));
+    console.log(chalk.gray("Run 'oprq init' first to initialize the project."));
     return;
   }
 

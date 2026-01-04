@@ -1,7 +1,7 @@
 <p align="center">
-  <h1 align="center">openapi-rq (orq)</h1>
+  <h1 align="center">oprq</h1>
   <p align="center">
-    <strong>OpenAPI React Query</strong> - OpenAPI 스펙에서 타입 안전한 React Query 코드 생성
+    <strong>OpenAPI React Query Codegen</strong> - OpenAPI 스펙에서 타입 안전한 React Query 코드 생성
   </p>
   <p align="center">
     <a href="./README_EN.md">English</a>
@@ -21,11 +21,9 @@
 
 https://github.com/user-attachments/assets/2720f298-4b98-4eb7-944b-d28d370e10d2
 
-**openapi-rq**는 OpenAPI 스펙에서 완전한 타입의 React Query 훅과 API 클라이언트 코드를 생성하는 CLI 도구입니다. [shadcn/ui](https://ui.shadcn.com/)에서 영감을 받아, 생성된 코드의 소유권을 사용자에게 제공합니다 - 런타임 의존성 없이 깔끔한 TypeScript 파일만 프로젝트에 추가됩니다.
+**oprq**는 OpenAPI 스펙에서 완전한 타입의 React Query 훅과 API 클라이언트 코드를 생성하는 CLI 도구입니다. [shadcn/ui](https://ui.shadcn.com/)에서 영감을 받아, 생성된 코드의 소유권을 사용자에게 제공합니다 - 런타임 의존성 없이 깔끔한 TypeScript 파일만 프로젝트에 추가됩니다.
 
-> **참고**: 패키지 이름은 `openapi-rq`이며, CLI 명령어는 `orq` (단축 별칭)입니다.
-
-## 왜 openapi-rq인가?
+## 왜 oprq인가?
 
 이 프로젝트는 팀 협업에서 API 명세에 대한 **단일 신뢰 원천(Single Source of Truth)**을 확립하기 위해 만들어졌습니다.
 
@@ -34,14 +32,14 @@ https://github.com/user-attachments/assets/2720f298-4b98-4eb7-944b-d28d370e10d2
 - **타입 안전성** - OpenAPI 스펙에서 직접 타입을 생성하여 런타임 에러 방지
 - **점진적 도입** - 전체 코드베이스를 변경할 필요 없이 필요한 엔드포인트만 선택적으로 생성. 레거시 프로젝트에도 부담 없이 적용 가능
 - **코드 소유권** - 생성된 코드는 프로젝트에 완전히 귀속. 필요시 자유롭게 수정 가능
-- **런타임 의존성 제로** - orq는 생성 도구일 뿐, 프로덕션 번들에 포함되지 않음
+- **런타임 의존성 제로** - oprq는 생성 도구일 뿐, 프로덕션 번들에 포함되지 않음
 - **병렬 개발 지원** - 백엔드 API가 준비되기 전에 플레이스홀더 생성으로 프론트엔드 개발 착수 가능
 
 ## 기능
 
 - **타입 안전** - OpenAPI 스키마에서 자동 생성된 타입으로 완전한 TypeScript 지원
 - **React Query v3/v4/v5** - TanStack Query의 모든 주요 버전 지원
-- **런타임 오버헤드 제로** - 생성된 코드는 orq에 대한 의존성이 없음
+- **런타임 오버헤드 제로** - 생성된 코드는 oprq에 대한 의존성이 없음
 - **대화형 CLI** - 퍼지 검색으로 특정 엔드포인트 선택
 - **점진적 생성** - 필요에 따라 개별 엔드포인트 추가 또는 재생성
 - **axios 통합** - HTTP 클라이언트 설정을 위한 부트스트랩 패턴
@@ -75,9 +73,9 @@ choco install fzf
 ## 설치
 
 ```bash
-npm install -g openapi-rq
+npm install -g oprq
 # 또는
-npx openapi-rq
+npx oprq
 ```
 
 ## 빠른 시작
@@ -87,38 +85,38 @@ npx openapi-rq
 npm install axios @tanstack/react-query
 
 # 2. 프로젝트 초기화
-npx openapi-rq init
+npx oprq init
 
 # 3. OpenAPI 스펙 추가
-npx openapi-rq add
+npx oprq add
 
 # 4. API 코드 생성
-npx openapi-rq gen
+npx oprq gen
 ```
 
 ## 명령어
 
 | 명령어 | 별칭 | 설명 |
 |--------|------|------|
-| `orq init` | - | 설정 파일과 유틸리티 파일로 프로젝트 초기화 |
-| `orq add` | - | 새 OpenAPI 스펙 URL 추가 |
-| `orq remove` | `rm` | 등록된 스펙 제거 |
-| `orq generate` | `g`, `gen` | API 코드 생성 (대화형) |
-| `orq sync` | - | 등록된 모든 스펙 재생성 |
-| `orq list` | `ls` | 등록된 스펙 목록 |
-| `orq create` | `new` | 플레이스홀더 API 생성 (병렬 개발용) |
+| `oprq init` | - | 설정 파일과 유틸리티 파일로 프로젝트 초기화 |
+| `oprq add` | - | 새 OpenAPI 스펙 URL 추가 |
+| `oprq remove` | `rm` | 등록된 스펙 제거 |
+| `oprq generate` | `g`, `gen` | API 코드 생성 (대화형) |
+| `oprq sync` | - | 등록된 모든 스펙 재생성 |
+| `oprq list` | `ls` | 등록된 스펙 목록 |
+| `oprq create` | `new` | 플레이스홀더 API 생성 (병렬 개발용) |
 
 ### 생성 옵션
 
 ```bash
 # 대화형 모드 (기본)
-npx openapi-rq gen
+npx oprq gen
 
 # 스펙의 모든 엔드포인트 생성
-npx openapi-rq gen --spec PETSTORE --all
+npx oprq gen --spec PETSTORE --all
 
 # 기존 파일 덮어쓰기
-npx openapi-rq gen --all --overwrite
+npx oprq gen --all --overwrite
 ```
 
 ### 플레이스홀더 API 생성
@@ -127,21 +125,21 @@ npx openapi-rq gen --all --overwrite
 
 ```bash
 # 대화형 모드
-npx openapi-rq create
+npx oprq create
 
 # 직접 지정
-npx openapi-rq create --method GET --path /users/{userId} --spec MY_API
+npx oprq create --method GET --path /users/{userId} --spec MY_API
 ```
 
-생성된 파일에는 타입과 훅이 포함되지만, API 함수는 실제 API가 준비될 때까지 에러를 던집니다. 실제 API가 준비되면 `orq generate --overwrite`로 교체하세요.
+생성된 파일에는 타입과 훅이 포함되지만, API 함수는 실제 API가 준비될 때까지 에러를 던집니다. 실제 API가 준비되면 `oprq generate --overwrite`로 교체하세요.
 
 ## 설정
 
-`orq init` 실행 후 `orq.config.json` 파일이 생성됩니다:
+`oprq init` 실행 후 `oprq.config.json` 파일이 생성됩니다:
 
 ```json
 {
-  "$schema": "https://unpkg.com/openapi-rq/schema.json",
+  "$schema": "https://unpkg.com/oprq/schema.json",
   "outputPath": "./src/api",
   "reactQueryVersion": "v5",
   "httpClient": "axios",
@@ -218,7 +216,7 @@ setHttpClient(http);
 ```typescript
 // src/main.tsx 또는 src/index.tsx
 import axios from "axios";
-import { setHttpClient } from "@/api/__orq__";
+import { setHttpClient } from "@/api/__oprq__";
 
 const http = axios.create({
   baseURL: "/api",
@@ -325,7 +323,7 @@ class PetDetail extends React.Component<{ petId: string }> {
 
 ```
 src/api/
-├── __orq__/
+├── __oprq__/
 │   ├── httpClient.ts      # HTTP 클라이언트 부트스트랩 & RequestConfig 타입
 │   ├── StringReplacer.ts  # URL 파라미터 유틸리티
 │   └── index.ts

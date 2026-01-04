@@ -4,7 +4,7 @@ import chalk from "chalk";
 import ora from "ora";
 import inquirer from "inquirer";
 
-const CONFIG_FILE_NAME = "orq.config.json";
+const CONFIG_FILE_NAME = "oprq.config.json";
 
 interface CreateOptions {
   method?: string;
@@ -12,7 +12,7 @@ interface CreateOptions {
   spec?: string;
 }
 
-interface OrqConfig {
+interface OprqConfig {
   outputPath: string;
   reactQueryVersion: "v3" | "v4" | "v5";
   specs?: Record<string, { url: string; description?: string }>;
@@ -33,7 +33,7 @@ type HttpMethod = (typeof HTTP_METHODS)[number];
  */
 export async function runCreate(options: CreateOptions): Promise<void> {
   console.log(chalk.bold("\n========================================"));
-  console.log(chalk.bold("  orq - Create Placeholder API"));
+  console.log(chalk.bold("  oprq - Create Placeholder API"));
   console.log(chalk.bold("========================================\n"));
 
   // Load config file
@@ -41,8 +41,8 @@ export async function runCreate(options: CreateOptions): Promise<void> {
   const config = await loadConfig(configPath);
 
   if (!config) {
-    console.log(chalk.red("orq.config.json not found."));
-    console.log(chalk.gray("Run 'orq init' first to initialize the project."));
+    console.log(chalk.red("oprq.config.json not found."));
+    console.log(chalk.gray("Run 'oprq init' first to initialize the project."));
     return;
   }
 
@@ -231,7 +231,7 @@ export async function runCreate(options: CreateOptions): Promise<void> {
     console.log("");
     console.log(chalk.yellow("⚠️  This is a placeholder file."));
     console.log(chalk.gray("   The API function will throw an error until you implement it."));
-    console.log(chalk.gray("   When the actual API is ready, run 'orq generate --overwrite' to replace."));
+    console.log(chalk.gray("   When the actual API is ready, run 'oprq generate --overwrite' to replace."));
     console.log("");
   } catch (error) {
     spinner.fail("Failed to create file.");
@@ -249,7 +249,7 @@ interface GenerateFileOptions {
   queryParamsType: string;
   bodyType: string;
   responseType: string;
-  config: OrqConfig;
+  config: OprqConfig;
 }
 
 function generatePlaceholderFile(options: GenerateFileOptions): string {
@@ -275,11 +275,11 @@ function generatePlaceholderFile(options: GenerateFileOptions): string {
   const hasRequiredBody = ["POST", "PUT", "PATCH"].includes(method) && bodyType !== "undefined";
   const argsDefault = !hasRequiredPathParams && !hasRequiredBody ? " = {}" : "";
 
-  // Calculate __orq__ relative path
-  // Structure: {specName}/{method}/...path.../index.ts → __orq__ is at specName's parent level
+  // Calculate __oprq__ relative path
+  // Structure: {specName}/{method}/...path.../index.ts → __oprq__ is at specName's parent level
   const pathDepth = apiPath.split("/").filter(Boolean).length;
   const totalDepth = 1 + 1 + pathDepth; // specName folder + method folder + path folders
-  const utilsRelativePath = "../".repeat(totalDepth) + "__orq__";
+  const utilsRelativePath = "../".repeat(totalDepth) + "__oprq__";
 
   const version = config.reactQueryVersion;
   const importPath = version === "v3" ? "react-query" : "@tanstack/react-query";
@@ -423,8 +423,8 @@ export const use${pascalCaseId}Mutation = <TContext = unknown>(
 
   return `/**
  * ${method.toUpperCase()} ${apiPath}
- * ⚠️ PLACEHOLDER - This file was created with 'orq create'
- * Replace with 'orq generate --overwrite' when the actual API is ready.
+ * ⚠️ PLACEHOLDER - This file was created with 'oprq create'
+ * Replace with 'oprq generate --overwrite' when the actual API is ready.
  * Generated at: ${now}
  * Source: ${specName}
  */
@@ -459,7 +459,7 @@ export const ${operationId}QueryKey = (req: RequestArgs) =>
 // ===== Repository =====
 /**
  * ⚠️ PLACEHOLDER: This function throws an error.
- * Implement the actual API call or wait for 'orq generate' to replace.
+ * Implement the actual API call or wait for 'oprq generate' to replace.
  */
 export const ${operationId} = async (args: RequestArgs${argsDefault}): Promise<Response> => {
   // TODO: Uncomment when API is ready
@@ -492,7 +492,7 @@ function toPascalCase(str: string): string {
     .replace(/^(.)/, (_, c) => c.toUpperCase());
 }
 
-async function loadConfig(configPath: string): Promise<OrqConfig | null> {
+async function loadConfig(configPath: string): Promise<OprqConfig | null> {
   try {
     const content = await fs.readFile(configPath, "utf-8");
     return JSON.parse(content);

@@ -1,10 +1,8 @@
-# openapi-rq (orq) Quick Start Guide
+# oprq Quick Start Guide
 
 ## Introduction
 
-**openapi-rq** is a CLI tool that automatically generates type-safe React Query code from OpenAPI specs.
-
-> **Note**: The package name is `openapi-rq`, and the CLI command is `orq` (short alias).
+**oprq** is a CLI tool that automatically generates type-safe React Query code from OpenAPI specs.
 
 - Just register an OpenAPI spec URL
 - Types, hooks, and API functions are auto-generated
@@ -14,10 +12,10 @@
 
 ```bash
 # Global install
-npm install -g openapi-rq
+npm install -g oprq
 
 # Or run directly with npx
-npx openapi-rq
+npx oprq
 ```
 
 ## Get Started in 1 Minute
@@ -25,10 +23,10 @@ npx openapi-rq
 ### Step 1: Initialize Project
 
 ```bash
-npx openapi-rq init
+npx oprq init
 ```
 
-This creates the config file (`orq.config.json`) and utility files.
+This creates the config file (`oprq.config.json`) and utility files.
 
 ### Step 2: Install Required Packages
 
@@ -43,7 +41,7 @@ npm install axios react-query
 ### Step 3: Register an OpenAPI Spec
 
 ```bash
-npx openapi-rq add
+npx oprq add
 ```
 
 ```
@@ -57,7 +55,7 @@ npx openapi-rq add
 ### Step 4: Generate API Code
 
 ```bash
-npx openapi-rq gen
+npx oprq gen
 ```
 
 Use fuzzy search to select the endpoints you want, and the code will be generated.
@@ -71,7 +69,7 @@ Register your axios instance at the app's entry point:
 ```typescript
 // src/main.tsx
 import axios from "axios";
-import { setHttpClient } from "@/api/__orq__";
+import { setHttpClient } from "@/api/__oprq__";
 
 const http = axios.create({
   baseURL: "/api",
@@ -107,18 +105,18 @@ function PetDetail({ petId }: { petId: string }) {
 
 | Command | Description |
 |---------|-------------|
-| `orq init` | Initialize project |
-| `orq add` | Register OpenAPI spec |
-| `orq gen` | Generate API code |
-| `orq list` | List registered specs |
-| `orq sync` | Regenerate all specs |
-| `orq create` | Create placeholder API |
+| `oprq init` | Initialize project |
+| `oprq add` | Register OpenAPI spec |
+| `oprq gen` | Generate API code |
+| `oprq list` | List registered specs |
+| `oprq sync` | Regenerate all specs |
+| `oprq create` | Create placeholder API |
 
 ## Generated File Structure
 
 ```
 src/api/
-├── __orq__/
+├── __oprq__/
 │   ├── httpClient.ts      # HTTP client setup & RequestConfig type
 │   ├── StringReplacer.ts  # URL parameter utility
 │   └── index.ts
@@ -131,7 +129,7 @@ src/api/
 
 ## Generation Options
 
-Configure which hooks to generate in `orq.config.json`:
+Configure which hooks to generate in `oprq.config.json`:
 
 ```json
 {
@@ -156,7 +154,7 @@ Configure which hooks to generate in `orq.config.json`:
 If the backend isn't ready yet, you can create placeholder APIs first:
 
 ```bash
-npx openapi-rq create
+npx oprq create
 ```
 
 ```
@@ -167,19 +165,19 @@ npx openapi-rq create
 ```
 
 A file with types and hooks will be created, but the API function throws an error.
-When the backend is ready, replace it with `npx openapi-rq gen --overwrite`.
+When the backend is ready, replace it with `npx oprq gen --overwrite`.
 
 ## Next Steps
 
 - [Full Documentation](./README_EN.md)
 - [Configuration Details](./README_EN.md#configuration)
-- [GitHub Repository](https://github.com/1394ysh/openapi-rq)
+- [GitHub Repository](https://github.com/1394ysh/oprq)
 
 ## Troubleshooting
 
-### "orq.config.json not found" error
+### "oprq.config.json not found" error
 
-Run `orq init` first.
+Run `oprq init` first.
 
 ### "HTTP client not initialized" error
 
@@ -187,4 +185,4 @@ Make sure you called `setHttpClient()` at app startup.
 
 ### Types don't match
 
-Regenerate code from the latest spec with `orq sync`.
+Regenerate code from the latest spec with `oprq sync`.

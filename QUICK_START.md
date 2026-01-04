@@ -1,10 +1,8 @@
-# openapi-rq (orq) 빠른 시작 가이드
+# oprq 빠른 시작 가이드
 
 ## 소개
 
-**openapi-rq**는 OpenAPI 스펙에서 타입 안전한 React Query 코드를 자동 생성하는 CLI 도구입니다.
-
-> **참고**: 패키지 이름은 `openapi-rq`이며, CLI 명령어는 `orq` (단축 별칭)입니다.
+**oprq**는 OpenAPI 스펙에서 타입 안전한 React Query 코드를 자동 생성하는 CLI 도구입니다.
 
 - OpenAPI 스펙 URL만 등록하면 끝
 - 타입, 훅, API 함수 자동 생성
@@ -14,10 +12,10 @@
 
 ```bash
 # 전역 설치
-npm install -g openapi-rq
+npm install -g oprq
 
 # 또는 npx로 바로 실행
-npx openapi-rq
+npx oprq
 ```
 
 ## 1분 만에 시작하기
@@ -25,10 +23,10 @@ npx openapi-rq
 ### Step 1: 프로젝트 초기화
 
 ```bash
-npx openapi-rq init
+npx oprq init
 ```
 
-설정 파일(`orq.config.json`)과 유틸리티 파일이 생성됩니다.
+설정 파일(`oprq.config.json`)과 유틸리티 파일이 생성됩니다.
 
 ### Step 2: 필수 패키지 설치
 
@@ -43,7 +41,7 @@ npm install axios react-query
 ### Step 3: OpenAPI 스펙 등록
 
 ```bash
-npx openapi-rq add
+npx oprq add
 ```
 
 ```
@@ -57,7 +55,7 @@ npx openapi-rq add
 ### Step 4: API 코드 생성
 
 ```bash
-npx openapi-rq gen
+npx oprq gen
 ```
 
 fuzzy 검색으로 원하는 엔드포인트를 선택하면 코드가 생성됩니다.
@@ -71,7 +69,7 @@ fuzzy 검색으로 원하는 엔드포인트를 선택하면 코드가 생성됩
 ```typescript
 // src/main.tsx
 import axios from "axios";
-import { setHttpClient } from "@/api/__orq__";
+import { setHttpClient } from "@/api/__oprq__";
 
 const http = axios.create({
   baseURL: "/api",
@@ -107,18 +105,18 @@ function PetDetail({ petId }: { petId: string }) {
 
 | 명령어 | 설명 |
 |--------|------|
-| `orq init` | 프로젝트 초기화 |
-| `orq add` | OpenAPI 스펙 등록 |
-| `orq gen` | API 코드 생성 |
-| `orq list` | 등록된 스펙 목록 |
-| `orq sync` | 모든 스펙 재생성 |
-| `orq create` | 플레이스홀더 API 생성 |
+| `oprq init` | 프로젝트 초기화 |
+| `oprq add` | OpenAPI 스펙 등록 |
+| `oprq gen` | API 코드 생성 |
+| `oprq list` | 등록된 스펙 목록 |
+| `oprq sync` | 모든 스펙 재생성 |
+| `oprq create` | 플레이스홀더 API 생성 |
 
 ## 생성되는 파일 구조
 
 ```
 src/api/
-├── __orq__/
+├── __oprq__/
 │   ├── httpClient.ts      # HTTP 클라이언트 설정 & RequestConfig 타입
 │   ├── StringReplacer.ts  # URL 파라미터 유틸리티
 │   └── index.ts
@@ -131,7 +129,7 @@ src/api/
 
 ## 생성 옵션 설정
 
-`orq.config.json`에서 생성할 훅을 선택할 수 있습니다:
+`oprq.config.json`에서 생성할 훅을 선택할 수 있습니다:
 
 ```json
 {
@@ -156,7 +154,7 @@ src/api/
 백엔드가 아직 준비되지 않았다면, 플레이스홀더 API를 먼저 생성할 수 있습니다:
 
 ```bash
-npx openapi-rq create
+npx oprq create
 ```
 
 ```
@@ -167,19 +165,19 @@ npx openapi-rq create
 ```
 
 타입과 훅이 포함된 파일이 생성되며, API 함수는 에러를 던지는 상태로 생성됩니다.
-백엔드가 완료되면 `npx openapi-rq gen --overwrite`로 실제 구현으로 교체하세요.
+백엔드가 완료되면 `npx oprq gen --overwrite`로 실제 구현으로 교체하세요.
 
 ## 다음 단계
 
 - [전체 문서 보기](./README.md)
 - [설정 옵션 상세](./README.md#설정)
-- [GitHub 저장소](https://github.com/1394ysh/openapi-rq)
+- [GitHub 저장소](https://github.com/1394ysh/oprq)
 
 ## 문제 해결
 
-### "orq.config.json not found" 에러
+### "oprq.config.json not found" 에러
 
-`orq init`을 먼저 실행하세요.
+`oprq init`을 먼저 실행하세요.
 
 ### "HTTP client not initialized" 에러
 
@@ -187,4 +185,4 @@ npx openapi-rq create
 
 ### 타입이 맞지 않음
 
-`orq sync`로 최신 스펙에서 코드를 재생성하세요.
+`oprq sync`로 최신 스펙에서 코드를 재생성하세요.

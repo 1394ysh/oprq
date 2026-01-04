@@ -14,15 +14,15 @@ interface AddOptions {
  */
 export async function runAdd(options: AddOptions): Promise<void> {
   console.log(chalk.bold("\n========================================"));
-  console.log(chalk.bold("  orq - Add OpenAPI Spec"));
+  console.log(chalk.bold("  oprq - Add OpenAPI Spec"));
   console.log(chalk.bold("========================================\n"));
 
   // Load config file
   const config = await loadConfigSimple();
 
   if (!config) {
-    console.log(chalk.red("orq.config.json not found."));
-    console.log(chalk.gray("Run 'orq init' first to initialize the project."));
+    console.log(chalk.red("oprq.config.json not found."));
+    console.log(chalk.gray("Run 'oprq init' first to initialize the project."));
     return;
   }
 
@@ -101,7 +101,7 @@ export async function runAdd(options: AddOptions): Promise<void> {
     console.log(chalk.gray(`  URL: ${specUrl}`));
     console.log(chalk.gray(`  Endpoints: ${endpointCount}`));
     console.log("");
-    console.log(chalk.cyan(`Run 'orq generate --spec ${specName}' to generate API code.`));
+    console.log(chalk.cyan(`Run 'oprq generate --spec ${specName}' to generate API code.`));
     console.log("");
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
