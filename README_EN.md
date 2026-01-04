@@ -95,15 +95,43 @@ npx oprq gen
 
 ## Commands
 
-| Command         | Alias      | Description                                       |
-| --------------- | ---------- | ------------------------------------------------- |
-| `oprq init`     | -          | Initialize project with config and utility files  |
-| `oprq add`      | -          | Add a new OpenAPI spec URL                        |
-| `oprq remove`   | `rm`       | Remove a registered spec                          |
-| `oprq generate` | `g`, `gen` | Generate API code (interactive)                   |
-| `oprq sync`     | -          | Regenerate all registered specs                   |
-| `oprq list`     | `ls`       | List registered specs                             |
-| `oprq create`   | `new`      | Create placeholder API (for parallel development) |
+### init
+
+Initialize project - creates config file (`oprq.config.json`) and utility files (`__oprq__/`)
+
+https://github.com/user-attachments/assets/fdfa6234-9dee-4c06-bc8d-8f4605971306
+
+### add
+
+Add a new OpenAPI spec URL
+
+https://github.com/user-attachments/assets/6d8bd179-02c5-4f63-8041-b24665904b36
+
+### generate (alias: `g`, `gen`)
+
+Generate API code - select by controller or endpoint
+
+**Select by Controller**
+
+https://github.com/user-attachments/assets/62b5839d-384f-49a8-a4bd-604461da37a9
+
+**Select by Endpoint**
+
+https://github.com/user-attachments/assets/ebf9070e-825c-4474-aa61-db944f58967a
+
+### create (alias: `new`)
+
+Create placeholder API - for frontend development before backend is ready
+
+https://github.com/user-attachments/assets/e6b14a94-03ad-4821-8b7d-5ba31d5afc12
+
+### Other Commands
+
+| Command         | Alias | Description                     |
+| --------------- | ----- | ------------------------------- |
+| `oprq remove`   | `rm`  | Remove a registered spec        |
+| `oprq sync`     | -     | Regenerate all registered specs |
+| `oprq list`     | `ls`  | List registered specs           |
 
 ### Generate Options
 

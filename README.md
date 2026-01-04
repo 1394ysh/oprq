@@ -95,15 +95,43 @@ npx oprq gen
 
 ## 명령어
 
+### init
+
+프로젝트 초기화 - 설정 파일(`oprq.config.json`)과 유틸리티 파일(`__oprq__/`) 생성
+
+https://github.com/user-attachments/assets/fdfa6234-9dee-4c06-bc8d-8f4605971306
+
+### add
+
+새 OpenAPI 스펙 URL 추가
+
+https://github.com/user-attachments/assets/6d8bd179-02c5-4f63-8041-b24665904b36
+
+### generate (별칭: `g`, `gen`)
+
+API 코드 생성 - 컨트롤러 또는 엔드포인트 단위로 선택 가능
+
+**컨트롤러 단위 선택**
+
+https://github.com/user-attachments/assets/62b5839d-384f-49a8-a4bd-604461da37a9
+
+**엔드포인트 단위 선택**
+
+https://github.com/user-attachments/assets/ebf9070e-825c-4474-aa61-db944f58967a
+
+### create (별칭: `new`)
+
+플레이스홀더 API 생성 - 백엔드 준비 전 프론트엔드 개발용
+
+https://github.com/user-attachments/assets/e6b14a94-03ad-4821-8b7d-5ba31d5afc12
+
+### 기타 명령어
+
 | 명령어 | 별칭 | 설명 |
 |--------|------|------|
-| `oprq init` | - | 설정 파일과 유틸리티 파일로 프로젝트 초기화 |
-| `oprq add` | - | 새 OpenAPI 스펙 URL 추가 |
 | `oprq remove` | `rm` | 등록된 스펙 제거 |
-| `oprq generate` | `g`, `gen` | API 코드 생성 (대화형) |
 | `oprq sync` | - | 등록된 모든 스펙 재생성 |
 | `oprq list` | `ls` | 등록된 스펙 목록 |
-| `oprq create` | `new` | 플레이스홀더 API 생성 (병렬 개발용) |
 
 ### 생성 옵션
 
