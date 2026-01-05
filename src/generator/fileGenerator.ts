@@ -231,7 +231,7 @@ function generateFileContent(options: GenerateContentOptions): string {
  * Source: ${specName}
  */
 ${reactQueryImport}
-import { StringReplacer, getHttpClient, type RequestConfig } from "${utilsRelativePath}";
+import { StringReplacer, getHttpClient, request, type RequestConfig } from "${utilsRelativePath}";
 
 // ===== Types =====
 ${schemaDefinitions ? `// Referenced Types\n${schemaDefinitions}\n` : ""}
@@ -256,8 +256,10 @@ export interface RequestArgs {
 const API_URL = "${specName}:${apiPath}";
 
 // ===== Query Keys =====
-export const ${operationId}QueryKey = (req: RequestArgs) =>
-  ["${specName}", "${method.toUpperCase()}", "${apiPath}", req] as const;
+export const ${operationId}QueryKey = (req: RequestArgs) => {
+  const url = new StringReplacer("${apiPath}").replaceText(req.pathParams ?? {});
+  return ["${specName}", "${method.toUpperCase()}", url, req.queryParams, req.body] as const;
+};
 
 // ===== Repository =====
 export const ${operationId} = async (args: RequestArgs${argsType}): Promise<Response> => {
@@ -522,7 +524,7 @@ function generateArgsType(options: {
 
 /**
  * HTTP 호출 코드 생성 (axios 전용)
- * 사용처의 axios instance가 interceptor에서 data를 추출할 수 있으므로 response 그대로 반환
+ * request()로 감싸서 onResponse/onError 핸들러 적용
  * args.config를 통해 headers, responseType 등 axios 옵션 주입 가능
  */
 function generateHttpCall(method: string): string {
@@ -530,17 +532,17 @@ function generateHttpCall(method: string): string {
 
   if (lowerMethod === "get") {
     return `  const http = getHttpClient();
-  return http.get(url, { params: args?.queryParams, ...args?.config });`;
+  return request(http.get(url, { params: args?.queryParams, ...args?.config }));`;
   }
 
   if (lowerMethod === "delete") {
     return `  const http = getHttpClient();
-  return http.delete(url, { params: args?.queryParams, data: args?.body, ...args?.config });`;
+  return request(http.delete(url, { params: args?.queryParams, data: args?.body, ...args?.config }));`;
   }
 
   // post, put, patch
   return `  const http = getHttpClient();
-  return http.${lowerMethod}(url, args?.body, { params: args?.queryParams, ...args?.config });`;
+  return request(http.${lowerMethod}(url, args?.body, { params: args?.queryParams, ...args?.config }));`;
 }
 
 /**

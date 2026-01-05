@@ -104,7 +104,7 @@ export async function runInteractiveMode(options: GenerateOptions): Promise<void
   const fullOutputPath = process.cwd() + "/" + outputPath;
   const utilsExist = await oprqFolderExists(fullOutputPath);
   if (!utilsExist) {
-    await generateUtilityFiles(fullOutputPath);
+    await generateUtilityFiles(fullOutputPath, config.keepSpecPrefix ?? true);
     console.log(chalk.green("✓ Utility files created"));
   }
 
