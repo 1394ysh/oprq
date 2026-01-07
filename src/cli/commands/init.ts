@@ -59,6 +59,16 @@ export async function runInit(options: InitOptions): Promise<void> {
     console.log(chalk.gray("  → Use single baseURL with axios.create({ baseURL })"));
   }
 
+  // Step 4: Ask about example spec
+  const { addExampleSpec } = await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "addExampleSpec",
+      message: "Add Petstore example spec?",
+      default: false,
+    },
+  ]);
+
   const config: ProjectConfig = {
     outputPath: path.resolve(process.cwd(), outputPath),
     reactQueryVersion: reactQueryConfig.version,
@@ -87,6 +97,15 @@ export async function runInit(options: InitOptions): Promise<void> {
 
   try {
     // Create config file (with all config keys)
+    const specs = addExampleSpec
+      ? {
+          PETSTORE: {
+            url: "https://petstore3.swagger.io/api/v3/openapi.json",
+            description: "Swagger Petstore API (example - can be removed)"
+          }
+        }
+      : {};
+
     await fs.writeFile(
       configPath,
       JSON.stringify(
@@ -96,12 +115,7 @@ export async function runInit(options: InitOptions): Promise<void> {
           reactQueryVersion: reactQueryConfig.version,
           httpClient: "axios",
           keepSpecPrefix: keepSpecPrefix,
-          specs: {
-            PETSTORE: {
-              url: "https://petstore3.swagger.io/api/v3/openapi.json",
-              description: "Swagger Petstore API (example - can be removed)"
-            }
-          },
+          specs: specs,
           generate: {
             queryHook: true,
             mutationHook: true,

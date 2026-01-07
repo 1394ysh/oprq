@@ -231,7 +231,7 @@ function generateFileContent(options: GenerateContentOptions): string {
  * Source: ${specName}
  */
 ${reactQueryImport}
-import { StringReplacer, getHttpClient, request, type RequestConfig } from "${utilsRelativePath}";
+import { StringReplacer, getHttpClient, request, generateQueryKey, type RequestConfig } from "${utilsRelativePath}";
 
 // ===== Types =====
 ${schemaDefinitions ? `// Referenced Types\n${schemaDefinitions}\n` : ""}
@@ -253,13 +253,16 @@ export interface RequestArgs {
 }
 
 // ===== API URL =====
-const API_URL = "${specName}:${apiPath}";
+const API_URL = "${specName}:${apiPath}" as const;
 
 // ===== Query Keys =====
-export const ${operationId}QueryKey = (req: RequestArgs) => {
-  const url = new StringReplacer("${apiPath}").replaceText(req.pathParams ?? {});
-  return ["${specName}", "${method.toUpperCase()}", url, req.queryParams, req.body] as const;
-};
+export const ${operationId}QueryKey = (req: RequestArgs) =>
+  generateQueryKey<typeof API_URL, PathParams, QueryParams, Body>(API_URL, {
+    method: "${method.toUpperCase()}",
+    path: req.pathParams,
+    param: req.queryParams,
+    body: req.body,
+  });
 
 // ===== Repository =====
 export const ${operationId} = async (args: RequestArgs${argsType}): Promise<Response> => {
