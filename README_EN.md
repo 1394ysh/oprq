@@ -353,6 +353,7 @@ src/api/
 ├── __oprq__/
 │   ├── httpClient.ts      # HTTP client bootstrap & RequestConfig type
 │   ├── StringReplacer.ts  # URL parameter utility
+│   ├── queryKey.ts        # React Query Key generation utility
 │   └── index.ts
 └── PETSTORE/
     ├── get/
@@ -367,7 +368,7 @@ Each API file includes:
 
 ```typescript
 // Types
-export type PathParams = { petId: string };
+export type PathParams = { petId: number };
 export type QueryParams = Record<string, never>;
 export type Body = undefined;
 export type Response = Pet;
@@ -381,17 +382,24 @@ export interface RequestArgs {
   config?: RequestConfig; // For custom headers, responseType, etc.
 }
 
-// Query key for cache management
+// API URL
+const API_URL = "PETSTORE:/pet/{petId}" as const;
+
+// Query key for cache management (type-safe generateQueryKey)
 export const getPetByIdQueryKey = (req: RequestArgs) =>
-  ["PETSTORE", "GET", "/pet/{petId}", req] as const;
+  generateQueryKey<typeof API_URL, PathParams, QueryParams, Body>(API_URL, {
+    method: "GET",
+    path: req.pathParams,
+    param: req.queryParams,
+    body: req.body,
+  });
+// => ["GET", "PETSTORE", "pet", 123, { queryParams }, { body }]
 
 // Repository function
 export const getPetById = async (args: RequestArgs): Promise<Response> => {
-  const url = new StringReplacer("PETSTORE:/pet/{petId}").replaceText(
-    args.pathParams
-  );
+  const url = new StringReplacer(API_URL).replaceText(args.pathParams ?? {});
   const http = getHttpClient();
-  return http.get(url, { params: args?.queryParams, ...args?.config });
+  return request(http.get(url, { params: args?.queryParams, ...args?.config }));
 };
 
 // React Query hook

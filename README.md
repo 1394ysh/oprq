@@ -353,6 +353,7 @@ src/api/
 ├── __oprq__/
 │   ├── httpClient.ts      # HTTP 클라이언트 부트스트랩 & RequestConfig 타입
 │   ├── StringReplacer.ts  # URL 파라미터 유틸리티
+│   ├── queryKey.ts        # React Query Key 생성 유틸리티
 │   └── index.ts
 └── PETSTORE/
     ├── get/
@@ -367,7 +368,7 @@ src/api/
 
 ```typescript
 // 타입
-export type PathParams = { petId: string };
+export type PathParams = { petId: number };
 export type QueryParams = Record<string, never>;
 export type Body = undefined;
 export type Response = Pet;
@@ -381,15 +382,24 @@ export interface RequestArgs {
   config?: RequestConfig;  // 커스텀 headers, responseType 등
 }
 
-// 캐시 관리를 위한 쿼리 키
+// API URL
+const API_URL = "PETSTORE:/pet/{petId}" as const;
+
+// 캐시 관리를 위한 쿼리 키 (타입 안전한 generateQueryKey 사용)
 export const getPetByIdQueryKey = (req: RequestArgs) =>
-  ["PETSTORE", "GET", "/pet/{petId}", req] as const;
+  generateQueryKey<typeof API_URL, PathParams, QueryParams, Body>(API_URL, {
+    method: "GET",
+    path: req.pathParams,
+    param: req.queryParams,
+    body: req.body,
+  });
+// => ["GET", "PETSTORE", "pet", 123, { queryParams }, { body }]
 
 // Repository 함수
 export const getPetById = async (args: RequestArgs): Promise<Response> => {
-  const url = new StringReplacer("PETSTORE:/pet/{petId}").replaceText(args.pathParams);
+  const url = new StringReplacer(API_URL).replaceText(args.pathParams ?? {});
   const http = getHttpClient();
-  return http.get(url, { params: args?.queryParams, ...args?.config });
+  return request(http.get(url, { params: args?.queryParams, ...args?.config }));
 };
 
 // React Query 훅
